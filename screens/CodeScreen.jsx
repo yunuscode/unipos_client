@@ -3,17 +3,13 @@ import { View, StyleSheet, Text } from "react-native";
 import Button from "../components/Button/Button";
 import Input from "../components/Input/Input";
 
-export default function LoginScreen({ navigation }) {
-	const sendPhone = () => {
-		navigation.navigate("CodeScreen");
-	};
-
+export default function CodeScreen() {
 	return (
 		<View style={styles.container}>
-			<Input placeholder="Telefon raqamingiz" keyboard="numpad" />
+			<Input placeholder="Sizga kelgan kod" keyboard="numpad" />
 
-			<Button onPress={sendPhone} style={styles.button}>
-				<Text style={styles.buttonText}>Kirish</Text>
+			<Button style={styles.button}>
+				<Text style={styles.buttonText}>Tasdiqlash</Text>
 			</Button>
 		</View>
 	);
