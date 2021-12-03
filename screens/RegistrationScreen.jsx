@@ -3,18 +3,22 @@ import { View, StyleSheet, Text } from "react-native";
 import Button from "../components/Button/Button";
 import Input from "../components/Input/Input";
 
-export default function CodeScreen({ navigation }) {
-	const sendCode = () => {
-		navigation.pop();
-		navigation.replace("RegistrationScreen");
-	};
-
+export default function RegistrationScreen({ navigation }) {
 	return (
 		<View style={styles.container}>
-			<Input placeholder="Sizga kelgan kod" keyboard="numpad" />
+			<Input
+				style={styles.input}
+				placeholder="Brendingiz nomi"
+				keyboard="numpad"
+			/>
+			<Input
+				style={styles.input}
+				placeholder="Ismingiz"
+				keyboard="numpad"
+			/>
 
-			<Button onPress={sendCode} style={styles.button}>
-				<Text style={styles.buttonText}>Tasdiqlash</Text>
+			<Button style={styles.button}>
+				<Text style={styles.buttonText}>Ro'yxatdan o'tish</Text>
 			</Button>
 		</View>
 	);
@@ -31,6 +35,9 @@ const styles = StyleSheet.create({
 	button: {
 		marginTop: 20,
 		backgroundColor: "#000000",
+	},
+	input: {
+		marginVertical: 10,
 	},
 	buttonText: {
 		color: "#ffffff",
