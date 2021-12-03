@@ -4,12 +4,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "../screens/LoginScreen";
 import CodeScreen from "../screens/CodeScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
+import HomeTabNavigator from "./HomeTabNavigator";
+import HomeScreen from "../screens/HomeScreen";
 
 const MainStack = createNativeStackNavigator();
 
 export default function MainStackNavigator() {
 	return (
-		<MainStack.Navigator>
+		<MainStack.Navigator initialRouteName="HomeTabNavigator">
 			<MainStack.Screen
 				options={{
 					title: "Kirish",
@@ -30,6 +32,14 @@ export default function MainStackNavigator() {
 				}}
 				name="RegistrationScreen"
 				component={RegistrationScreen}
+			/>
+
+			<MainStack.Screen
+				options={{
+					headerShown: false,
+				}}
+				name="HomeTabNavigator"
+				component={HomeTabNavigator}
 			/>
 		</MainStack.Navigator>
 	);

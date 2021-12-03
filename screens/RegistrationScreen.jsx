@@ -1,9 +1,13 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Pressable } from "react-native";
 import Button from "../components/Button/Button";
 import Input from "../components/Input/Input";
 
 export default function RegistrationScreen({ navigation }) {
+	function sendRegistration() {
+		navigation.navigate("HomeTabNavigator");
+	}
+
 	return (
 		<View style={styles.container}>
 			<Input
@@ -17,7 +21,7 @@ export default function RegistrationScreen({ navigation }) {
 				keyboard="numpad"
 			/>
 
-			<Button style={styles.button}>
+			<Button onPress={sendRegistration} style={styles.button}>
 				<Text style={styles.buttonText}>Ro'yxatdan o'tish</Text>
 			</Button>
 		</View>
