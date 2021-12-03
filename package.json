@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.6",
+    "@react-navigation/native-stack": "^6.2.5",
     "expo": "~43.0.2",
     "expo-app-loading": "~1.2.1",
     "expo-status-bar": "~1.1.0",

@@ -3,27 +3,14 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
+import MainStackNavigator from "./navigators/MainStackNavigator";
 
 export default function App() {
-	const [ready, setReady] = React.useState(false);
+	const [ready, setReady] = React.useState(true);
 
 	const loadResources = async () => {
-		return await new Promise((r, e) => {
-			setTimeout(() => {
-				r();
-			}, 4000);
-		});
+		return true;
 	};
-
-	if (!ready) {
-		return (
-			<AppLoading
-				startAsync={loadResources}
-				onFinish={() => setReady(true)}
-				onError={console.warn}
-			/>
-		);
-	}
 
 	if (ready) {
 		return <Main />;
@@ -33,19 +20,7 @@ export default function App() {
 function Main() {
 	return (
 		<NavigationContainer>
-			<View style={styles.container}>
-				<Text>Open up App.js to start working on your app!</Text>
-				<StatusBar style="auto" />
-			</View>
+			<MainStackNavigator />
 		</NavigationContainer>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-});
