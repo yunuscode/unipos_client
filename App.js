@@ -6,7 +6,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
 import MainStackNavigator from "./navigators/MainStackNavigator";
 import { enableScreens } from "react-native-screens";
-import * as SQLite from "expo-sqlite";
 import { DatabaseProvider } from "./contexts/DatabaseContext";
 
 enableScreens();
