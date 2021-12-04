@@ -20,8 +20,14 @@ export function DatabaseProvider({ children }) {
 
 		const db = SQLite.openDatabase("db.db");
 
-		SQLiteService.createTableBranches(db);
-		SQLiteService.createTableCategories(db);
+		// db.exec(
+		// 	[{ sql: "PRAGMA table_info('categories');", args: [] }],
+		// 	false,
+		// 	(...args) => console.log(args)
+		// );
+
+		// SQLiteService.createTableBranches(db);
+		// SQLiteService.createTableCategories(db);
 
 		return db;
 	}

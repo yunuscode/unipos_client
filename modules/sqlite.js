@@ -2,8 +2,8 @@ import uuid from "react-native-uuid";
 
 export class SQLiteService {
 	static async createTableBranches(db) {
-		const query = `CREATE TABLE IF NOT EXISTS branches (
-            branch_id SERIAL NOT NULL primary key,
+		const query = `CREATE TABLE branches (
+            branch_id VARCHAR NOT NULL primary key,
             branch_name VARCHAR NOT NULL,
             branch_lat FLOAT NOT NULL,
             branch_long FLOAT NOT NULL
@@ -19,9 +19,10 @@ export class SQLiteService {
 	}
 
 	static async createTableCategories(db) {
-		const query = `CREATE TABLE IF NOT EXISTS categories (
+		const query = `CREATE TABLE categories (
             category_id SERIAL NOT NULL primary key,
-            category_name VARCHAR NOT NULL
+            category_name VARCHAR NOT NULL,
+			branch_id VARCHAR NOT NULL REFERENCES branches(branch_id)
         );`;
 		db.transaction((tx) => {
 			tx.executeSql(
@@ -34,7 +35,7 @@ export class SQLiteService {
 	}
 
 	static async createTableProducts(db) {
-		const query = `CREATE TABLE IF NOT EXISTS products (
+		const query = `CREATE TABLE products (
             product_id SERIAL NOT NULL primary key,
             product_name VARCHAR NOT NULL,
             product_barcode INT NOT NULL,
@@ -74,6 +75,32 @@ export class SQLiteService {
 					(_, error) => reject(error)
 				);
 			});
+		});
+	}
+
+	static async getAllCategories(db, branch_id) {
+		const query = `SELECT * FROM categories WHERE branch_id = ?`;
+		return new Promise((resolve, reject) => {
+			db.transaction((tx) => {
+				tx.executeSql(
+					query,
+					[branch_id],
+					(e, { rows: { _array } }) => resolve(_array),
+					(_, error) => reject(error)
+				);
+			});
+		});
+	}
+
+	static async insertCategory(db, category_name, branch_id) {
+		const query = `INSERT INTO categories(category_id, category_name, branch_id) VALUES (?, ?, ?)`;
+		db.transaction((tx) => {
+			tx.executeSql(
+				query,
+				[uuid.v4(), category_name, branch_id],
+				(e, { rows: { _array } }) => console.log(_array),
+				(_, error) => console.log("Error", error)
+			);
 		});
 	}
 }
