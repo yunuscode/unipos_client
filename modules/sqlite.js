@@ -12,8 +12,41 @@ export class SQLiteService {
 			tx.executeSql(
 				query,
 				[],
+				(e, { rows: { _array } }) => {},
+				(_, error) => console.log("Error", error)
+			);
+		});
+	}
+
+	static async createTableCategories(db) {
+		const query = `CREATE TABLE IF NOT EXISTS categories (
+            category_id SERIAL NOT NULL primary key,
+            category_name VARCHAR NOT NULL
+        );`;
+		db.transaction((tx) => {
+			tx.executeSql(
+				query,
+				[],
+				(e, { rows: { _array } }) => {},
+				(_, error) => console.log("Error", error)
+			);
+		});
+	}
+
+	static async createTableProducts(db) {
+		const query = `CREATE TABLE IF NOT EXISTS products (
+            product_id SERIAL NOT NULL primary key,
+            product_name VARCHAR NOT NULL,
+            product_barcode INT NOT NULL,
+			product_count INT NOT NULL,
+			product_weight_type VARCHAR NOT NULL
+        );`;
+		db.transaction((tx) => {
+			tx.executeSql(
+				query,
+				[],
 				(e, { rows: { _array } }) => console.log(_array),
-				(error) => console.log("Error", error)
+				(_, error) => console.log("Error", error)
 			);
 		});
 	}

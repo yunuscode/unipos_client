@@ -6,6 +6,7 @@ import CodeScreen from "../screens/CodeScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import HomeTabNavigator from "./HomeTabNavigator";
 import HomeScreen from "../screens/HomeScreen";
+import CategoriesScreen from "../screens/CategoriesScreen";
 
 const MainStack = createNativeStackNavigator();
 
@@ -40,6 +41,12 @@ export default function MainStackNavigator() {
 				}}
 				name="HomeTabNavigator"
 				component={HomeTabNavigator}
+			/>
+
+			<MainStack.Screen
+				name="CategoriesScreen"
+				component={CategoriesScreen}
+				options={({ route }) => ({ title: route.params.name })}
 			/>
 		</MainStack.Navigator>
 	);

@@ -14,7 +14,7 @@ import Button from "../components/Button/Button";
 import Input from "../components/Input/Input";
 import { useDB } from "../contexts/DatabaseContext";
 import { SQLiteService } from "../modules/sqlite";
-import BottomSheet from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
 import MapView, {
 	PROVIDER_GOOGLE,
@@ -37,8 +37,6 @@ export default function HomeScreen({ navigation }) {
 	const [readyMap, setReadyMap] = React.useState(true);
 
 	const getDatas = () => {
-		SQLiteService.createTableBranches(db);
-
 		getAllBranches();
 	};
 
@@ -47,8 +45,15 @@ export default function HomeScreen({ navigation }) {
 	}, []);
 
 	const renderItem = ({ item }) => {
+		const openCategory = (e) => {
+			navigation.navigate("CategoriesScreen", {
+				name: item.branch_name,
+				id: item.branch_id,
+			});
+		};
+
 		return (
-			<Pressable style={styles.button}>
+			<Pressable onPress={openCategory} style={styles.button}>
 				<Text style={styles.buttonText}>{item.branch_name}</Text>
 			</Pressable>
 		);
@@ -97,7 +102,9 @@ export default function HomeScreen({ navigation }) {
 				snapPoints={snapPoints}
 				enableOverDrag={false}
 			>
-				<View style={styles.contentContainer}>
+				<BottomSheetScrollView
+					contentContainerStyle={styles.contentContainer}
+				>
 					<Text style={styles.addBranch}>
 						Filial qo'shish ma'lumotlarini kiriting
 					</Text>
@@ -108,7 +115,6 @@ export default function HomeScreen({ navigation }) {
 					{readyMap && (
 						<MapView
 							onMapReady={(e) => {
-								console.log(e);
 								setReadyMap(true);
 							}}
 							initialRegion={region}
@@ -136,7 +142,7 @@ export default function HomeScreen({ navigation }) {
 					>
 						<Text style={styles.addButtonText}>Bekor qilish</Text>
 					</Pressable>
-				</View>
+				</BottomSheetScrollView>
 			</BottomSheet>
 		</View>
 	);
@@ -177,6 +183,7 @@ const styles = StyleSheet.create({
 	},
 	contentContainer: {
 		padding: 16,
+		flex: 1,
 	},
 	map: {
 		minWidth: "100%",

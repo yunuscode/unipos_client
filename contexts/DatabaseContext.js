@@ -1,5 +1,6 @@
 import React from "react";
 import * as SQLite from "expo-sqlite";
+import { SQLiteService } from "../modules/sqlite";
 
 export const DatabaseContext = React.createContext();
 
@@ -18,6 +19,10 @@ export function DatabaseProvider({ children }) {
 		}
 
 		const db = SQLite.openDatabase("db.db");
+
+		SQLiteService.createTableBranches(db);
+		SQLiteService.createTableCategories(db);
+
 		return db;
 	}
 
