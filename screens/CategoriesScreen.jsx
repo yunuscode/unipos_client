@@ -30,8 +30,15 @@ export default function CategoriesScreen({ navigation, route }) {
 	};
 
 	const renderItem = ({ item }) => {
+		const openProduct = (e) => {
+			navigation.navigate("ProductsScreen", {
+				name: item.category_name,
+				id: item.category_id,
+			});
+		};
+
 		return (
-			<Pressable style={styles.button}>
+			<Pressable onPress={openProduct} style={styles.button}>
 				<Text style={styles.buttonText}>{item.category_name}</Text>
 			</Pressable>
 		);

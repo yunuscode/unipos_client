@@ -20,14 +20,23 @@ export function DatabaseProvider({ children }) {
 
 		const db = SQLite.openDatabase("db.db");
 
+		// db.exec([{ sql: "DROP TABLE branches;", args: [] }], false, (...args) =>
+		// 	console.log(args)
+		// );
+
 		// db.exec(
-		// 	[{ sql: "PRAGMA table_info('categories');", args: [] }],
+		// 	[{ sql: "DROP TABLE categories;", args: [] }],
 		// 	false,
 		// 	(...args) => console.log(args)
 		// );
 
+		// db.exec([{ sql: "DROP TABLE products;", args: [] }], false, (...args) =>
+		// 	console.log(args)
+		// );
+
 		// SQLiteService.createTableBranches(db);
 		// SQLiteService.createTableCategories(db);
+		// SQLiteService.createTableProducts(db);
 
 		return db;
 	}

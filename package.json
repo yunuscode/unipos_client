@@ -18,6 +18,7 @@
     "expo": "~43.0.2",
     "expo-app-loading": "~1.2.1",
     "expo-asset": "~8.4.3",
+    "expo-barcode-scanner": "~11.1.2",
     "expo-file-system": "~13.0.3",
     "expo-font": "~10.0.3",
     "expo-sqlite": "~10.0.3",

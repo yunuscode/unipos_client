@@ -7,6 +7,7 @@ import RegistrationScreen from "../screens/RegistrationScreen";
 import HomeTabNavigator from "./HomeTabNavigator";
 import HomeScreen from "../screens/HomeScreen";
 import CategoriesScreen from "../screens/CategoriesScreen";
+import ProductsScreen from "../screens/ProductsScreen";
 
 const MainStack = createNativeStackNavigator();
 
@@ -46,7 +47,17 @@ export default function MainStackNavigator() {
 			<MainStack.Screen
 				name="CategoriesScreen"
 				component={CategoriesScreen}
-				options={({ route }) => ({ title: route.params.name })}
+				options={({ route }) => ({
+					title: `"${route.params.name}" filiali`,
+				})}
+			/>
+
+			<MainStack.Screen
+				name="ProductsScreen"
+				component={ProductsScreen}
+				options={({ route }) => ({
+					title: `"${route.params.name}" kategoriyasi`,
+				})}
 			/>
 		</MainStack.Navigator>
 	);
