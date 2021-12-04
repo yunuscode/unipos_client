@@ -34,9 +34,9 @@ export function DatabaseProvider({ children }) {
 		// 	console.log(args)
 		// );
 
-		// SQLiteService.createTableBranches(db);
-		// SQLiteService.createTableCategories(db);
-		// SQLiteService.createTableProducts(db);
+		SQLiteService.createTableBranches(db);
+		SQLiteService.createTableCategories(db);
+		SQLiteService.createTableProducts(db);
 
 		return db;
 	}

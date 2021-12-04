@@ -2,7 +2,7 @@ import uuid from "react-native-uuid";
 
 export class SQLiteService {
 	static async createTableBranches(db) {
-		const query = `CREATE TABLE branches (
+		const query = `CREATE TABLE IF NOT EXISTS branches (
             branch_id VARCHAR NOT NULL primary key,
             branch_name VARCHAR NOT NULL,
             branch_lat FLOAT NOT NULL,
@@ -19,7 +19,7 @@ export class SQLiteService {
 	}
 
 	static async createTableProducts(db) {
-		const query = `CREATE TABLE products (
+		const query = `CREATE TABLE IF NOT EXISTS products (
             product_id VARCHAR NOT NULL primary key,
             product_name VARCHAR NOT NULL,
             product_count INT NOT NULL,
@@ -39,7 +39,7 @@ export class SQLiteService {
 	}
 
 	static async createTableCategories(db) {
-		const query = `CREATE TABLE categories (
+		const query = `CREATE TABLE IF NOT EXISTS categories (
             category_id SERIAL NOT NULL primary key,
             category_name VARCHAR NOT NULL,
 			branch_id VARCHAR NOT NULL REFERENCES branches(branch_id)
