@@ -8,6 +8,7 @@ import {
 	FlatList,
 	ScrollView,
 	Alert,
+	Switch,
 } from "react-native";
 import Button from "../components/Button/Button";
 import Input from "../components/Input/Input";
@@ -32,6 +33,7 @@ export default function ProductsScreen({ navigation, route }) {
 	const [hasPermission, setHasPermission] = React.useState(null);
 	const bottomSheetRef = React.useRef(null);
 	const snapPoints = React.useMemo(() => ["1%", "100%"], []);
+	const [canSharable, setCanSharable] = React.useState(false);
 
 	const getAllProducts = async () => {
 		try {
@@ -74,6 +76,7 @@ export default function ProductsScreen({ navigation, route }) {
 			type,
 			price,
 			barCode,
+			canSharable,
 			id
 		);
 
@@ -154,6 +157,17 @@ export default function ProductsScreen({ navigation, route }) {
 						style={styles.input}
 					/>
 
+					<View style={styles.select}>
+						<Text>Qidiruvga qo'shish</Text>
+						<Switch
+							trackColor={{ false: "#ffffff", true: "#000000" }}
+							thumbColor={canSharable ? "#ffffff" : "#fff"}
+							ios_backgroundColor="#3e3e3e"
+							onValueChange={(e) => setCanSharable(!canSharable)}
+							value={canSharable}
+						/>
+					</View>
+
 					<Pressable onPress={submitBranch} style={styles.addButton}>
 						<Text style={styles.addButtonText}>Qo'shish</Text>
 					</Pressable>
@@ -196,10 +210,10 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 	},
 	buttonText: {
-		fontSize: 17,
+		fontSize: 15,
 	},
 	countText: {
-		fontSize: 17,
+		fontSize: 15,
 		marginLeft: "auto",
 	},
 	floatButton: {
@@ -233,5 +247,14 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontWeight: "600",
 		fontSize: 17,
+	},
+	select: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+		padding: 8,
+		marginTop: 10,
+		borderWidth: 1,
+		borderColor: "#00000033",
 	},
 });

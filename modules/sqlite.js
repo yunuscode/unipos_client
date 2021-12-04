@@ -6,7 +6,8 @@ export class SQLiteService {
             branch_id VARCHAR NOT NULL primary key,
             branch_name VARCHAR NOT NULL,
             branch_lat FLOAT NOT NULL,
-            branch_long FLOAT NOT NULL
+            branch_long FLOAT NOT NULL,
+			branch_sync BOOLEAN NOT NULL DEFAULT FALSE
         );`;
 		db.transaction((tx) => {
 			tx.executeSql(
@@ -26,6 +27,8 @@ export class SQLiteService {
             product_type VARCHAR NOT NULL,
             product_price VARCHAR NOT NULL,
             product_barcode VARCHAR NOT NULL,
+			product_share BOOLEAN NOT NULL,
+			product_sync BOOLEAN NOT NULL DEFAULT FALSE,
 			category_id VARCHAR NOT NULL REFERENCES categories(category_id)
         );`;
 		db.transaction((tx) => {
@@ -42,6 +45,7 @@ export class SQLiteService {
 		const query = `CREATE TABLE IF NOT EXISTS categories (
             category_id SERIAL NOT NULL primary key,
             category_name VARCHAR NOT NULL,
+			category_sync BOOLEAN NOT NULL DEFAULT FALSE,
 			branch_id VARCHAR NOT NULL REFERENCES branches(branch_id)
         );`;
 		db.transaction((tx) => {
@@ -113,9 +117,10 @@ export class SQLiteService {
 		product_type,
 		product_price,
 		product_barcode,
+		product_share,
 		category_id
 	) {
-		const query = `INSERT INTO products(product_id, product_name, product_count, product_type, product_price, product_barcode, category_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+		const query = `INSERT INTO products(product_id, product_name, product_count, product_type, product_price, product_barcode, product_share, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 		db.transaction((tx) => {
 			tx.executeSql(
 				query,
@@ -126,6 +131,7 @@ export class SQLiteService {
 					product_type,
 					product_price,
 					product_barcode,
+					product_share,
 					category_id,
 				],
 				(e, { rows: { _array } }) => console.log(_array),
@@ -141,6 +147,20 @@ export class SQLiteService {
 				tx.executeSql(
 					query,
 					[category_id],
+					(e, { rows: { _array } }) => resolve(_array),
+					(_, error) => reject(error)
+				);
+			});
+		});
+	}
+
+	static async getOneProducts(db, product_barcode) {
+		const query = `SELECT * FROM products WHERE product_barcode = ?`;
+		return new Promise((resolve, reject) => {
+			db.transaction((tx) => {
+				tx.executeSql(
+					query,
+					[product_barcode],
 					(e, { rows: { _array } }) => resolve(_array),
 					(_, error) => reject(error)
 				);

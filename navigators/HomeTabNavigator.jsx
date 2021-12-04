@@ -3,6 +3,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { Image, Text } from "react-native";
+import ProfileScreen from "../screens/ProfileScreen";
+import HistoryScreen from "../screens/HistoryScreen";
+import CashScreen from "../screens/CashScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -32,7 +35,7 @@ export default function HomeTabNavigator() {
 					),
 				}}
 				name="CashMachineScreen"
-				component={HomeScreen}
+				component={CashScreen}
 			/>
 
 			<Tab.Screen
@@ -47,7 +50,7 @@ export default function HomeTabNavigator() {
 					),
 				}}
 				name="HistoryScreen"
-				component={HomeScreen}
+				component={HistoryScreen}
 			/>
 
 			<Tab.Screen
@@ -62,7 +65,7 @@ export default function HomeTabNavigator() {
 					),
 				}}
 				name="ProfileScreen"
-				component={HomeScreen}
+				component={ProfileScreen}
 			/>
 		</Tab.Navigator>
 	);
