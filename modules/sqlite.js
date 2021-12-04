@@ -167,4 +167,60 @@ export class SQLiteService {
 			});
 		});
 	}
+
+	static async getProductsCount(db) {
+		const query = `SELECT COUNT(*) as 'TOTAL_COUNT', COUNT(products.product_sync) as 'SYNCED_COUNT' FROM products`;
+		return new Promise((resolve, reject) => {
+			db.transaction((tx) => {
+				tx.executeSql(
+					query,
+					[],
+					(e, { rows: { _array } }) => resolve(_array),
+					(_, error) => reject(error)
+				);
+			});
+		});
+	}
+
+	static async getCategoriesCount(db) {
+		const query = `SELECT COUNT(*) as 'TOTAL_COUNT', COUNT(categories.category_sync) as 'SYNCED_COUNT' FROM categories`;
+		return new Promise((resolve, reject) => {
+			db.transaction((tx) => {
+				tx.executeSql(
+					query,
+					[],
+					(e, { rows: { _array } }) => resolve(_array),
+					(_, error) => reject(error)
+				);
+			});
+		});
+	}
+
+	static async getBranchesCount(db) {
+		const query = `SELECT COUNT(*) as 'TOTAL_COUNT', COUNT(branches.branch_sync) as 'SYNCED_COUNT' FROM branches`;
+		return new Promise((resolve, reject) => {
+			db.transaction((tx) => {
+				tx.executeSql(
+					query,
+					[],
+					(e, { rows: { _array } }) => resolve(_array),
+					(_, error) => reject(error)
+				);
+			});
+		});
+	}
+
+	static async getCategoriesCount(db) {
+		const query = `SELECT COUNT(*) as 'TOTAL_COUNT', COUNT(categories.category_sync) as 'SYNCED_COUNT' FROM categories`;
+		return new Promise((resolve, reject) => {
+			db.transaction((tx) => {
+				tx.executeSql(
+					query,
+					[],
+					(e, { rows: { _array } }) => resolve(_array),
+					(_, error) => reject(error)
+				);
+			});
+		});
+	}
 }
