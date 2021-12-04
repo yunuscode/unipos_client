@@ -70,8 +70,10 @@ export class SQLiteService {
 		});
 	}
 
-	static async getAllBranches(db) {
-		const query = `SELECT * FROM branches`;
+	static async getAllBranches(db, synced) {
+		const query = `SELECT * FROM branches ${
+			synced ? "WHERE branch_sync = false" : ""
+		}`;
 		return new Promise((resolve, reject) => {
 			db.transaction((tx) => {
 				tx.executeSql(
@@ -91,6 +93,34 @@ export class SQLiteService {
 				tx.executeSql(
 					query,
 					[branch_id],
+					(e, { rows: { _array } }) => resolve(_array),
+					(_, error) => reject(error)
+				);
+			});
+		});
+	}
+
+	static async getAllCategoriesWithoutBranch(db) {
+		const query = `SELECT * FROM categories where category_sync = false`;
+		return new Promise((resolve, reject) => {
+			db.transaction((tx) => {
+				tx.executeSql(
+					query,
+					[],
+					(e, { rows: { _array } }) => resolve(_array),
+					(_, error) => reject(error)
+				);
+			});
+		});
+	}
+
+	static async getAllProductsWithoutBranch(db) {
+		const query = `SELECT * FROM products where product_sync = false`;
+		return new Promise((resolve, reject) => {
+			db.transaction((tx) => {
+				tx.executeSql(
+					query,
+					[],
 					(e, { rows: { _array } }) => resolve(_array),
 					(_, error) => reject(error)
 				);
@@ -169,7 +199,7 @@ export class SQLiteService {
 	}
 
 	static async getProductsCount(db) {
-		const query = `SELECT COUNT(*) as 'TOTAL_COUNT', COUNT(products.product_sync) as 'SYNCED_COUNT' FROM products`;
+		const query = `SELECT COUNT(*) as 'TOTAL_COUNT', COUNT(CASE WHEN products.product_sync THEN 1 END) as 'SYNCED_COUNT' FROM products`;
 		return new Promise((resolve, reject) => {
 			db.transaction((tx) => {
 				tx.executeSql(
@@ -183,7 +213,7 @@ export class SQLiteService {
 	}
 
 	static async getCategoriesCount(db) {
-		const query = `SELECT COUNT(*) as 'TOTAL_COUNT', COUNT(categories.category_sync) as 'SYNCED_COUNT' FROM categories`;
+		const query = `SELECT COUNT(*) as 'TOTAL_COUNT', COUNT( CASE WHEN categories.category_sync THEN 1 END) as 'SYNCED_COUNT' FROM categories`;
 		return new Promise((resolve, reject) => {
 			db.transaction((tx) => {
 				tx.executeSql(
@@ -197,7 +227,7 @@ export class SQLiteService {
 	}
 
 	static async getBranchesCount(db) {
-		const query = `SELECT COUNT(*) as 'TOTAL_COUNT', COUNT(branches.branch_sync) as 'SYNCED_COUNT' FROM branches`;
+		const query = `SELECT COUNT(*) as 'TOTAL_COUNT', COUNT(CASE WHEN branches.branch_sync THEN 1 END)  as 'SYNCED_COUNT' FROM branches`;
 		return new Promise((resolve, reject) => {
 			db.transaction((tx) => {
 				tx.executeSql(
@@ -211,7 +241,21 @@ export class SQLiteService {
 	}
 
 	static async getCategoriesCount(db) {
-		const query = `SELECT COUNT(*) as 'TOTAL_COUNT', COUNT(categories.category_sync) as 'SYNCED_COUNT' FROM categories`;
+		const query = `SELECT COUNT(*) as 'TOTAL_COUNT', COUNT(CASE WHEN categories.category_sync THEN 1 END) as 'SYNCED_COUNT' FROM categories`;
+		return new Promise((resolve, reject) => {
+			db.transaction((tx) => {
+				tx.executeSql(
+					query,
+					[],
+					(e, { rows: { _array } }) => resolve(_array),
+					(_, error) => reject(error)
+				);
+			});
+		});
+	}
+
+	static async setSynced(db, db_name, db_column) {
+		const query = `UPDATE ${db_name} SET ${db_column}=true`;
 		return new Promise((resolve, reject) => {
 			db.transaction((tx) => {
 				tx.executeSql(

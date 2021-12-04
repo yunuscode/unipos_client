@@ -85,6 +85,7 @@ export default function ProductsScreen({ navigation, route }) {
 
 	React.useEffect(() => {
 		getAllProducts();
+		console.log(id);
 	}, []);
 
 	React.useEffect(() => {

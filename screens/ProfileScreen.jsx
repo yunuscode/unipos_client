@@ -1,10 +1,19 @@
 import React from "react";
-import { View, StyleSheet, Text, Dimensions, ScrollView } from "react-native";
+import {
+	View,
+	StyleSheet,
+	Text,
+	Dimensions,
+	ScrollView,
+	Pressable,
+	Alert,
+} from "react-native";
 import Button from "../components/Button/Button";
 import Input from "../components/Input/Input";
 import { BarChart } from "react-native-chart-kit";
 import { SQLiteService } from "../modules/sqlite";
 import { useDB } from "../contexts/DatabaseContext";
+import FetchService from "../services/FetchService";
 
 export default function ProfileScreen({ navigation }) {
 	const [db] = useDB();
@@ -47,6 +56,58 @@ export default function ProfileScreen({ navigation }) {
 		});
 	};
 
+	const syncBranches = async () => {
+		try {
+			const branches = await SQLiteService.getAllBranches(db, true);
+
+			const upload = await FetchService.syncBranches(branches);
+
+			await SQLiteService.setSynced(db, "branches", "branch_sync");
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const syncCategories = async () => {
+		try {
+			const categories =
+				await SQLiteService.getAllCategoriesWithoutBranch(db);
+
+			const upload = await FetchService.syncCategories(categories);
+
+			await SQLiteService.setSynced(db, "categories", "category_sync");
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const syncProducts = async () => {
+		try {
+			const products = await SQLiteService.getAllProductsWithoutBranch(
+				db
+			);
+
+			const upload = await FetchService.syncProducts(products);
+
+			await SQLiteService.setSynced(db, "products", "product_sync");
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const sync = async () => {
+		try {
+			await syncBranches();
+			await syncCategories();
+			await syncProducts();
+		} finally {
+			Alert.alert(
+				"So'rov tugadi",
+				"Barcha ma'lumotlar bazaga muvaffaqiyatli yuklandi"
+			);
+		}
+	};
+
 	React.useEffect(() => {
 		const unsubscribe = navigation.addListener("focus", () => {
 			getAll();
@@ -57,6 +118,9 @@ export default function ProfileScreen({ navigation }) {
 
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
+			<Pressable onPress={sync} style={styles.syncButton}>
+				<Text style={styles.syncText}>Sinxronizatsiya qilish</Text>
+			</Pressable>
 			<View style={styles.wrappersWrapper}>
 				<View style={styles.wrapper}>
 					<Text style={styles.statsTitle}>Umumiy ma'lumotlar:</Text>
@@ -140,6 +204,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 		alignItems: "center",
 		padding: 16,
+		paddingTop: 10,
 	},
 	buttonText: {
 		color: "#ffffff",
@@ -166,5 +231,17 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		marginBottom: 20,
 		width: "100%",
+	},
+	syncButton: {
+		width: "100%",
+		padding: 16,
+		backgroundColor: "#000",
+		marginBottom: 10,
+	},
+	syncText: {
+		fontSize: 18,
+		fontWeight: "600",
+		color: "#fff",
+		textAlign: "center",
 	},
 });
